@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello World - Web Socket</title>
+</head>
+<body>
+<h1>Hello World - Web Socket</h1>
+<form>
+    <fieldset>
+        <label>Text</label>
+        <input id="text" type="text" value="Hello, World!"/>
+        <input type="submit" id="ws" value="Send"/>
+    </fieldset>
+</form>
+<h2>Result</h2>
+<span id="result"></span>
+
+<script>
+
+var port = "";
+var url = 'ws://' + window.location.host + port + window.location.pathname + 'ws';
+var ws = new WebSocket(url);
+ws.onconnect = function(e) {
+  console.log("connected");
+}
+ws.onerror = function (error) {
+  console.log('WebSocket Error ' + error);
+};
+ws.onclose = function(event){
+     console.log("Remote host closed or refused WebSocket connection");
+     console.log(event);
+};
+ws.onmessage = function(message) {
+  document.getElementById("result").innerHTML = message.data;
+};
+
+document.getElementById("ws").onclick =  function(event) {
+  event.preventDefault();
+  var text = document.getElementById("text").value;
+  ws.send(text);
+};
+</script>
+</head>
+</body>
+</html>
